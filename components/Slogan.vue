@@ -1,7 +1,7 @@
 <template>
     <div>
         <h2 class="title is-2">FoodAdvisor, tu web de restaurantes</h2>
-        <div class="subcribe" v-if="is_subscribed">
+        <div class="subcribe" v-if="!is_subscribed">
             <input v-model="email" type="text" class="input email" placeholder="email..." />
             <button class="button is-info" @click="subscribe">
                 Suscribirse

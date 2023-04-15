@@ -8,15 +8,19 @@
 
     <div class="container">
       <section class="section">
-        <restaurant-card 
+        <div class="columns is-multiline">
+          <restaurant-card 
           :name="restaurant.name"
           :description="restaurant.description"
           :category="restaurant.category"
           :slug="restaurant.slug"
           :likes="restaurant.likes"
-          @onLikeButton="sumLikes(index)"
+          :image="restaurant.image"
+          @onLikeButton="sumLikes(restaurant)"
           v-for="(restaurant, index) in restaurants" :key="index"
+          class="restaurant-card"
         />
+        </div>   
       </section>
     </div>
     
@@ -39,13 +43,21 @@ export default {
     Banner,
     Slogan
   },
-
-  async created() {
-    const response = await api.getRestaurants()
-    if (response.status == 200) {
-      this.restaurants = response.data
+  async asyncData() {
+    try {
+      const { data } = await api.getRestaurants()
+      return { restaurants: data }
+    } catch {
+      return { restaurants: [] }
     }
   },
+
+  // async created() {
+  //   const response = await api.getRestaurants()
+  //   if (response.status == 200) {
+  //     this.restaurants = response.data
+  //   }
+  // },
 
   data() {
     return {
@@ -55,8 +67,18 @@ export default {
   },  
 
   methods: {
-    sumLikes(index) {
-      this.restaurants[index].likes++
+    async sumLikes(restaurant) {
+      const payload = {
+        id: restaurant.id,
+        data: {
+          likes: restaurant.likes++
+        }
+      }
+      const response = await api.putSumRestaurantLikes(payload)
+      console.log(response)
+      if(response.status == 200) {
+        restaurant.likes++
+      }
     },
     changeShowBannerValue() {
       this.showBanner = !this.showBanner
@@ -67,12 +89,9 @@ export default {
 }
 </script>
 
-<!-- <style scoped>
-.Banner {
-  width: 790px;
+<style scoped>
+.restaurant-card {
+  margin: 10px 10px;
+  max-width: 300px;
 }
-
-.Slogan {
-  width: 790px;
-}
-</style> -->
+</style>

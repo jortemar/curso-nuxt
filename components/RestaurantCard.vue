@@ -2,7 +2,7 @@
   <div class="card" style="width: 400px">
     <div class="card-image">
       <figure class="image">
-        <img src="~/assets/images/restaurant.jpg" alt="Pizza Restaurant" />
+        <img :src="image" alt="Pizza Restaurant" />
       </figure>
     </div>
     <div class="card-content">
@@ -13,9 +13,11 @@
           </p>
           <div class="columns">
             <div class="column">
-              <span class="tag">
-                {{ category }}
-              </span>
+              <a :href="category">
+                <span class="tag">
+                  {{ category }}
+                </span>
+              </a>           
             </div>
             <div class="column has-text-right">
               <button @click="sumLikes" class="button is-info">
@@ -27,7 +29,7 @@
       </div>
       <div class="content">
         {{ description }}
-        <a :href="slug">more info</a>.
+        <a :href="category + '/' + slug">more info</a>.
       </div>
     </div>
   </div>
@@ -55,6 +57,10 @@ export default {
       likes: {
         type: Number,
         default: 0
+      },
+      image: {
+        type: String,
+        default: ''
       }
     },
 
