@@ -14,7 +14,7 @@
           <div class="columns">
             <div class="column">
               <a :href="category">
-                <span class="tag">
+                <span class="is-category tag">
                   {{ category }}
                 </span>
               </a>           
